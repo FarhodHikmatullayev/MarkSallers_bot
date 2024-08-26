@@ -37,7 +37,7 @@ async def download_all_sellers_function():
 
         branch = await db.select_branch(id=branch_id)
 
-        branch_name = branch['name']
+        branch_name = branch[0]['name']
 
         tr += 1
         worksheet.cell(row=row, column=1, value=tr)

@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import User, Branch, Sellers, Marks
+from .models import *
 
 
 @admin.register(User)
@@ -19,4 +19,9 @@ class SellerAdmin(admin.ModelAdmin):
 
 @admin.register(Marks)
 class MarksAdmin(admin.ModelAdmin):
+    pass
+
+
+@admin.register(Category)
+class CategoryAdmin(admin.ModelAdmin):
     pass

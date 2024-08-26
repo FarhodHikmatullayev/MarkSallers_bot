@@ -31,6 +31,7 @@ async def save_sellers_from_excel(message: types.Message, state: FSMContext):
         file_path = os.path.join('/tmp', file_name)
 
         await message.document.download(file_path)
+        await db.delete_all_sellers()
 
         try:
             # Load the Excel file
@@ -41,10 +42,10 @@ async def save_sellers_from_excel(message: types.Message, state: FSMContext):
             for row in range(2, worksheet.max_row + 1):
                 first_name = worksheet.cell(row=row, column=2).value
                 last_name = worksheet.cell(row=row, column=3).value
-                phone = worksheet.cell(row=row, column=4).value
-                code = worksheet.cell(row=row, column=5).value
-                branch_name = worksheet.cell(row=row, column=6).value
-
+                branch_name = worksheet.cell(row=row, column=4).value
+                phone = worksheet.cell(row=row, column=5).value
+                code = worksheet.cell(row=row, column=6).value
+                print('branch_name', branch_name)
                 branches = await db.select_branch(name=branch_name)
                 if branches:
                     branch = branches[0]
@@ -59,8 +60,8 @@ async def save_sellers_from_excel(message: types.Message, state: FSMContext):
 
             await message.answer(f'"{file_name}" dagi ma\'lumotlar muvaffaqiyatli saqlandi')
         except (Exception, psycopg2.Error) as error:
-            await message.answer(f'Error occurred while processing the file: {error}'
-                                 f'Kiritgan faylingizdagi ma\'lumotlarda xatolik mavjud,'
+            await message.answer(f'Error occurred while processing the file: {error}\n'
+                                 f'Kiritgan faylingizdagi ma\'lumotlarda xatolik mavjud,\n'
                                  f'Iltimos, o\'zgartirib qayta jo\'nating.')
             await AddSellerState.waiting_for_excel_file.set()
         finally:

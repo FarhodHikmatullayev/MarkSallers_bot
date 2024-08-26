@@ -42,9 +42,22 @@ class Sellers(models.Model):
         return f"{self.first_name} {self.last_name}"
 
 
+class Category(models.Model):
+    title = models.CharField(max_length=221)
+
+    class Meta:
+        db_table = 'category'
+        verbose_name = "Category"
+        verbose_name_plural = "Baholash kategoriyalari"
+
+    def __str__(self):
+        return self.title
+
+
 class Marks(models.Model):
     seller = models.ForeignKey(Sellers, on_delete=models.CASCADE)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
+    category = models.ForeignKey(Category, on_delete=models.CASCADE)
     mark = models.IntegerField(validators=[
         MinValueValidator(1),
         MaxValueValidator(5),
@@ -58,4 +71,4 @@ class Marks(models.Model):
         verbose_name_plural = 'Baholar/Izohlar'
 
     def __str__(self):
-        return f"{self.user.full_name} ning {self.seller} uchun bildirgan bahosi va izohi"
+        return f"{self.user.full_name} ning {self.seller} uchun {self.category} bo'yicha bildirgan bahosi va izohi"
