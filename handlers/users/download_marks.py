@@ -88,9 +88,14 @@ async def download_all_comments_function(category_id):
 async def download_mark(message: Message, state: FSMContext):
     await state.finish()
 
-    text = "Quyidagi baholash kategoriyalaridan birini tanlang"
-    markup = await categories_keyboard()
-    await message.answer(text=text, reply_markup=markup)
+    categories = await db.select_all_categories()
+    if categories:
+        text = "Quyidagi baholash kategoriyalaridan birini tanlang"
+        markup = await categories_keyboard()
+        await message.answer(text=text, reply_markup=markup)
+    else:
+        text = "Hali fikrlar mavjud emas"
+        await message.answer(text=text, reply_markup=back_menu)
 
 
 @dp.callback_query_handler(categories_callback_data.filter())

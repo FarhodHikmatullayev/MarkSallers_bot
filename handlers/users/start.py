@@ -38,9 +38,18 @@ async def get_contact(message: Message):
 async def bot_start(message: types.Message, state: FSMContext):
     print('user_telegram_id', message.from_user.id)
 
-    text = f"Salom, {message.from_user.full_name}!\n"
-    text += "Botimizga xush kelibsiz\n" \
-            "Botdan ro'yxatdan o'tish uchun kontaktingizni yuboring"
+    users = await db.select_users(telegram_id=message.from_user.id)
 
-    await message.answer(text, reply_markup=keyboard)
-    await state.finish()
+    if users:
+        if str(message.from_user.id) in ADMINS:
+            menu_keyboard = await menu(is_admin=True)
+        else:
+            menu_keyboard = await menu()
+        await message.answer(text="Quyidagi bo'limlardan birini tanlang", reply_markup=menu_keyboard)
+    else:
+        text = f"Salom, {message.from_user.full_name}!\n"
+        text += "Botimizga xush kelibsiz\n" \
+                "Botdan ro'yxatdan o'tish uchun kontaktingizni yuboring"
+
+        await message.answer(text, reply_markup=keyboard)
+        await state.finish()
