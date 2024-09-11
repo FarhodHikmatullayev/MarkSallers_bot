@@ -74,4 +74,4 @@ class Marks(models.Model):
         verbose_name_plural = 'Baholar/Izohlar'
 
     def __str__(self):
-        return f"{self.user.full_name} ning {self.seller} uchun {self.category} bo'yicha bildirgan bahosi va izohi"
+        return f"{self.user.full_name} -> {self.seller} ({self.category})"
