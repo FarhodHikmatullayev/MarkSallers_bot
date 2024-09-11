@@ -25,6 +25,9 @@ class Branch(models.Model):
         verbose_name = 'Branch'
         verbose_name_plural = "Filiallar"
 
+    def __str__(self):
+        return self.name
+
 
 class Sellers(models.Model):
     code = models.BigIntegerField(null=True, blank=True, unique=True)
