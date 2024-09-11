@@ -3,10 +3,10 @@ from django.db import models
 
 
 class User(models.Model):
-    full_name = models.CharField(max_length=221, null=True, blank=True)
-    username = models.CharField(max_length=221, null=True, blank=True)
-    phone = models.CharField(max_length=13, null=True, blank=True)
-    telegram_id = models.BigIntegerField(unique=True)
+    full_name = models.CharField(max_length=221, null=True, blank=True, verbose_name='F.I.Sh')
+    username = models.CharField(max_length=221, null=True, blank=True, verbose_name='USERNAME')
+    phone = models.CharField(max_length=13, null=True, blank=True, verbose_name='TELEFON RAQAM')
+    telegram_id = models.BigIntegerField(unique=True, verbose_name='TELEGRAM ID')
 
     class Meta:
         db_table = 'users'
@@ -18,7 +18,7 @@ class User(models.Model):
 
 
 class Branch(models.Model):
-    name = models.CharField(max_length=221)
+    name = models.CharField(max_length=221, verbose_name='FILIAL NOMI')
 
     class Meta:
         db_table = 'branch'
@@ -30,11 +30,11 @@ class Branch(models.Model):
 
 
 class Sellers(models.Model):
-    code = models.BigIntegerField(null=True, blank=True, unique=True)
-    branch = models.ForeignKey(Branch, on_delete=models.CASCADE)
-    first_name = models.CharField(max_length=221, null=True, blank=True)
-    last_name = models.CharField(max_length=221, null=True, blank=True)
-    phone = models.CharField(max_length=13, null=True, blank=True)
+    code = models.BigIntegerField(null=True, blank=True, unique=True, verbose_name='MAXSUS KOD')
+    branch = models.ForeignKey(Branch, on_delete=models.CASCADE, verbose_name='FILIAL')
+    first_name = models.CharField(max_length=221, null=True, blank=True, verbose_name='ISM')
+    last_name = models.CharField(max_length=221, null=True, blank=True, verbose_name='FAMILIYA')
+    phone = models.CharField(max_length=13, null=True, blank=True, verbose_name='TELEFON RAQAM')
 
     class Meta:
         db_table = 'seller'
@@ -46,7 +46,7 @@ class Sellers(models.Model):
 
 
 class Category(models.Model):
-    title = models.CharField(max_length=221)
+    title = models.CharField(max_length=221, verbose_name='KATEGORIYA NOMI')
 
     class Meta:
         db_table = 'category'
@@ -58,15 +58,15 @@ class Category(models.Model):
 
 
 class Marks(models.Model):
-    seller = models.ForeignKey(Sellers, on_delete=models.CASCADE)
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
-    category = models.ForeignKey(Category, on_delete=models.CASCADE)
+    seller = models.ForeignKey(Sellers, on_delete=models.CASCADE, verbose_name='SAVDOGAR')
+    user = models.ForeignKey(User, on_delete=models.CASCADE, verbose_name='BAHO BERGAN SHAXS')
+    category = models.ForeignKey(Category, on_delete=models.CASCADE, verbose_name='KATEGORIYA NOMI')
     mark = models.IntegerField(validators=[
         MinValueValidator(1),
         MaxValueValidator(5),
-    ])
-    description = models.TextField(null=True, blank=True)
-    created_at = models.DateTimeField(null=True, blank=True)
+    ], verbose_name='BAHO')
+    description = models.TextField(null=True, blank=True, verbose_name='IZOH')
+    created_at = models.DateTimeField(null=True, blank=True, verbose_name='YARATILGAN VAQT')
 
     class Meta:
         db_table = 'mark'
