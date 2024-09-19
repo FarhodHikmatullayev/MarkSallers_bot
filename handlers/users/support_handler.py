@@ -6,7 +6,7 @@ from loader import bot, dp
 
 @dp.message_handler(text='Qo\'llab quvvatlash')
 async def support(message: types.Message):
-    text = "Bot haqida to'liq ma'lumot olish uchun: \n\n" \
+    text = "Bot haqida to'liq ma'lumot olish hamda talab va takliflar uchun bizga bog'laning: \n\n" \
            "Tel: +998900832345\n" \
            "Command: /help\n" \
            "Telegram: https://t.me/pydev8747\n" \
