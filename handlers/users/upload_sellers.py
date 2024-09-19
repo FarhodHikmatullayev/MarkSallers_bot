@@ -6,7 +6,8 @@ from aiogram import types
 from aiogram.dispatcher import FSMContext
 from aiogram.dispatcher.filters import Command
 from aiogram.types import ContentType, ContentTypes
-from data.config import ADMINS
+from data.config import ADMINS, SUPERADMINS
+from keyboards.default.back_menu import back_menu
 from loader import dp, db
 from openpyxl import load_workbook
 
@@ -16,11 +17,17 @@ from states.sellers import AddSellerState
 # SAVE_DIRECTORY = 'path/to/save/directory'
 
 
-@dp.message_handler(text='Upload sellers', user_id=ADMINS, state='*')
+@dp.message_handler(text='Upload sellers', user_id=SUPERADMINS, state='*')
 async def get_sellers_excel_file(message: types.Message):
     text = "Sotuvchilar jadvalini yuboring (Excel)"
     await message.answer(text=text)
     await AddSellerState.waiting_for_excel_file.set()
+
+
+@dp.message_handler(text='Upload sellers', state='*')
+async def get_sellers_excel_file(message: types.Message):
+    text = "Sizda bu buyruqdan foydalanish uchun ruxsat mavjud emas."
+    await message.answer(text=text, reply_markup=back_menu)
 
 
 @dp.message_handler(content_types=[ContentType.DOCUMENT], state=AddSellerState.waiting_for_excel_file)

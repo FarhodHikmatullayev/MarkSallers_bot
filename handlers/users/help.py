@@ -7,7 +7,10 @@ from loader import dp
 
 @dp.message_handler(CommandHelp(), state='*')
 async def bot_help(message: types.Message, state: FSMContext):
-    state.finish()
+    try:
+        await state.finish()
+    except:
+        pass
     text = ("Buyruqlar: ",
             "/start - Botni ishga tushirish",
             "/help - Yordam")
