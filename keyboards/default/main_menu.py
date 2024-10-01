@@ -15,12 +15,10 @@ menu_for_admins = ReplyKeyboardMarkup(
             KeyboardButton(text="Sotuvchilarga baho berish"),
         ],
         [
-            KeyboardButton(text="Qo'llab quvvatlash"),
-        ],
-        [
             KeyboardButton(text="Bildirilgan baholarni yuklab olish"),
         ],
         [
+            KeyboardButton(text="Qo'llab quvvatlash"),
             KeyboardButton(text="Download sellers"),
             # KeyboardButton(text="Upload sellers"),
         ]
