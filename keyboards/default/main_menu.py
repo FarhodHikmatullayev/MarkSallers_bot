@@ -22,7 +22,7 @@ menu_for_admins = ReplyKeyboardMarkup(
         ],
         [
             KeyboardButton(text="Download sellers"),
-            KeyboardButton(text="Upload sellers"),
+            # KeyboardButton(text="Upload sellers"),
         ]
     ]
 )
