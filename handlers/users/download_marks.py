@@ -27,8 +27,8 @@ async def download_all_comments_function(category_id):
     worksheet['E1'] = 'XODIM ISM FAMILIYASI'
     worksheet['F1'] = 'BAHOLASH KATEGORIYASI'
     worksheet['G1'] = 'BAHO'
-    worksheet['H1'] = 'FIKR'
-    worksheet['I1'] = 'VAQT'
+    worksheet['H1'] = 'VAQT'
+    worksheet['I1'] = 'FIKR'
 
     worksheet.cell(row=1, column=1, value='№')
     worksheet.cell(row=1, column=2, value='BAHOLAGAN SHAXS')
@@ -37,8 +37,8 @@ async def download_all_comments_function(category_id):
     worksheet.cell(row=1, column=5, value='XODIM ISM FAMILIYASI')
     worksheet.cell(row=1, column=6, value='BAHOLASH KATEGORIYASI')
     worksheet.cell(row=1, column=7, value='BAHO')
-    worksheet.cell(row=1, column=8, value='FIKR')
-    worksheet.cell(row=1, column=9, value='VAQT')
+    worksheet.cell(row=1, column=8, value='VAQT')
+    worksheet.cell(row=1, column=9, value='FIKR')
     tr = 0
     for row, mark in enumerate(marks, start=2):
         user_id = mark['user_id']
@@ -54,9 +54,6 @@ async def download_all_comments_function(category_id):
 
         branch_name = branch[0]['name']
         full_name = user['full_name']
-        username = user['username']
-        phone = user['phone']
-        telegram_id = user['telegram_id']
 
         tr += 1
         worksheet.cell(row=row, column=1, value=tr)
@@ -66,9 +63,9 @@ async def download_all_comments_function(category_id):
         worksheet.cell(row=row, column=5, value=seller_full_name)  # XODIM ISMI
         worksheet.cell(row=row, column=6, value=category['title'])
         worksheet.cell(row=row, column=7, value=mark['mark'])
-        worksheet.cell(row=row, column=8, value=mark['description'])
-        worksheet.cell(row=row, column=9,
-                       value=(mark['created_at'] + datetime.timedelta(hours=5)).strftime('%Y-%m-%d %H:%M:%S'))
+        worksheet.cell(row=row, column=8,
+                       value=(mark['created_at'] + datetime.timedelta(hours=5)).strftime('%d.%m.%Y %H:%M'))
+        worksheet.cell(row=row, column=9, value=mark['description'])
 
     temp_dir = tempfile.gettempdir()
     file_path = os.path.join(temp_dir, 'Comments_data.xlsx')
