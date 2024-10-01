@@ -117,8 +117,14 @@ async def get_mark_description(message: types.Message, state: FSMContext):
     data = await state.get_data()
     category_id = data.get('category_id')
     category = await db.select_category(id=category_id)
+    sellers = await db.select_sellers(id=data.get('seller_id'))
+    if sellers:
+        seller = sellers[0]
+        seller_code = seller['code']
+    else:
+        seller_code = 'Anonim'
     text = f"Sizning bahoyingiz quyidagicha👇\n" \
-           f"Sotuvchi ID raqami: {data.get('seller_id')}\n" \
+           f"Sotuvchi ID raqami: {seller_code}\n" \
            f"Baholash kategoriyasi: {category['title']}\n" \
            f"Siz qo'ygan ball: {data.get('mark')}\n" \
            f"Izoh: {data.get('description')}\n" \

@@ -1,11 +1,9 @@
 import datetime
 import tempfile
-from typing import Union
 
 from aiogram import types
 from aiogram.dispatcher import FSMContext
-from aiogram.dispatcher.filters import Command
-from aiogram.types import CallbackQuery, Message
+from aiogram.types import Message
 import openpyxl
 import os
 
@@ -23,28 +21,24 @@ async def download_all_comments_function(category_id):
     worksheet = workbook.active
 
     worksheet['A1'] = 'T/r'
-    worksheet['B1'] = 'FULL_NAME'
-    worksheet['C1'] = 'USERNAME'
-    worksheet['D1'] = 'PHONE'
-    worksheet['E1'] = 'TELEGRAM_ID'
-    worksheet['F1'] = 'FILIAL NOMI'
-    worksheet['G1'] = 'XODIM ID RAQAMI'
-    worksheet['H1'] = 'BAHOLASH KATEGORIYASI'
-    worksheet['I1'] = 'BAHO'
-    worksheet['J1'] = 'FIKR'
-    worksheet['K1'] = 'VAQT'
+    worksheet['B1'] = 'BAHOLAGAN SHAXS'
+    worksheet['C1'] = 'FILIAL NOMI'
+    worksheet['D1'] = 'XODIM ID RAQAMI'
+    worksheet['E1'] = 'XODIM ISM FAMILIYASI'
+    worksheet['F1'] = 'BAHOLASH KATEGORIYASI'
+    worksheet['G1'] = 'BAHO'
+    worksheet['H1'] = 'FIKR'
+    worksheet['I1'] = 'VAQT'
 
     worksheet.cell(row=1, column=1, value='№')
-    worksheet.cell(row=1, column=2, value='FULL_NAME')
-    worksheet.cell(row=1, column=3, value="USERNAME")
-    worksheet.cell(row=1, column=4, value='PHONE')
-    worksheet.cell(row=1, column=5, value='TELEGRAM_ID')
-    worksheet.cell(row=1, column=6, value='FILIAL NOMI')
-    worksheet.cell(row=1, column=7, value='XODIM ID RAQAMI')
-    worksheet.cell(row=1, column=8, value='BAHOLASH KATEGORIYASI')
-    worksheet.cell(row=1, column=9, value='BAHO')
-    worksheet.cell(row=1, column=10, value='FIKR')
-    worksheet.cell(row=1, column=11, value='VAQT')
+    worksheet.cell(row=1, column=2, value='BAHOLAGAN SHAXS')
+    worksheet.cell(row=1, column=3, value="FILIAL NOMI")
+    worksheet.cell(row=1, column=4, value='XODIM ID RAQAMI')
+    worksheet.cell(row=1, column=5, value='XODIM ISM FAMILIYASI')
+    worksheet.cell(row=1, column=6, value='BAHOLASH KATEGORIYASI')
+    worksheet.cell(row=1, column=7, value='BAHO')
+    worksheet.cell(row=1, column=8, value='FIKR')
+    worksheet.cell(row=1, column=9, value='VAQT')
     tr = 0
     for row, mark in enumerate(marks, start=2):
         user_id = mark['user_id']
@@ -54,6 +48,7 @@ async def download_all_comments_function(category_id):
         sellers = await db.select_sellers(id=seller_id)
         seller = sellers[0]
         seller_code = seller['code']
+        seller_full_name = f"{seller['first_name']} {seller['last_name']}"
         branch_id = seller['branch_id']
         branch = await db.select_branch(id=branch_id)
 
@@ -66,15 +61,13 @@ async def download_all_comments_function(category_id):
         tr += 1
         worksheet.cell(row=row, column=1, value=tr)
         worksheet.cell(row=row, column=2, value=full_name)
-        worksheet.cell(row=row, column=3, value=username)
-        worksheet.cell(row=row, column=4, value=phone)
-        worksheet.cell(row=row, column=5, value=telegram_id)
-        worksheet.cell(row=row, column=6, value=branch_name)
-        worksheet.cell(row=row, column=7, value=seller_code)
-        worksheet.cell(row=row, column=8, value=category['title'])
-        worksheet.cell(row=row, column=9, value=mark['mark'])
-        worksheet.cell(row=row, column=10, value=mark['description'])
-        worksheet.cell(row=row, column=11,
+        worksheet.cell(row=row, column=3, value=branch_name)
+        worksheet.cell(row=row, column=4, value=seller_code)
+        worksheet.cell(row=row, column=5, value=seller_full_name)  # XODIM ISMI
+        worksheet.cell(row=row, column=6, value=category['title'])
+        worksheet.cell(row=row, column=7, value=mark['mark'])
+        worksheet.cell(row=row, column=8, value=mark['description'])
+        worksheet.cell(row=row, column=9,
                        value=(mark['created_at'] + datetime.timedelta(hours=5)).strftime('%Y-%m-%d %H:%M:%S'))
 
     temp_dir = tempfile.gettempdir()
