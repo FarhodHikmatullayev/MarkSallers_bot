@@ -113,7 +113,8 @@ class Database:
 
     # for marks
 
-    async def create_mark(self, seller_id, user_id, category_id, mark, description, created_at=datetime.datetime.now()):
+    async def create_mark(self, seller_id, user_id, category_id, mark, description):
+        created_at = datetime.datetime.now()
         sql = "INSERT INTO Mark (seller_id, user_id, category_id, mark, description, created_at) VALUES($1, $2, $3, $4, $5, $6) returning *"
         return await self.execute(sql, seller_id, user_id, category_id, mark, description, created_at, fetchrow=True)
 
